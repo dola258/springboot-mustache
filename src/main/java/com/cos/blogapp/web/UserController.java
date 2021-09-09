@@ -22,17 +22,12 @@ import com.cos.blogapp.web.dto.LoginReqDto;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor // final을 붙이면 생성자를 따로 안 만들수있다.
 @Controller
 public class UserController {
 
 	private final UserRepository userRepository;
 	private final HttpSession session;
-	
-	@GetMapping({"/", "/home"})  //{}선택
-	public String home() {
-		return "home";
-	}
 	
 	// /WEB-INF/views/user/login.jsp
 	// /WEB-INF/views/login.jsp
