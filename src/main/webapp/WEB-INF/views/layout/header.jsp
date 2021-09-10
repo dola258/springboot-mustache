@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Blog</title>
-  <meta charset="utf-8">
+	<title>Blog</title>
+	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -22,14 +22,44 @@
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/loginForm">로그인</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/joinForm">회원가입</a>
-      </li> 
+      <c:choose>
+    	<c:when test="${empty sessionScope.principal}">
+				<li class="nav-item">
+					<a class="nav-link" href="/loginForm">로그인</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/joinForm">회원가입</a>
+				</li>
+			</c:when>
+      	<c:otherwise>
+			<li class="nav-item">
+				<!-- 굳이 앞에 도메인을 적는 이유: 필터링 처리하기위해  -->
+				<a class="nav-link" href="/board/saveForm">글쓰기</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/user/${sessionScope.principal.id}">회원정보</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">로그아웃</a>
+			</li>
+      	</c:otherwise>
+      </c:choose>
     </ul>
   </div>  
 </nav>
 <br>
 <!-- 네브바 끝 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+

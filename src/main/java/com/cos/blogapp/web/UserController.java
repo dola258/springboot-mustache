@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cos.blogapp.domain.user.User;
 import com.cos.blogapp.domain.user.UserRepository;
 import com.cos.blogapp.util.MyAlgorithm;
-import com.cos.blogapp.util.SHA256;
+import com.cos.blogapp.util.SHA;
 import com.cos.blogapp.util.Script;
 import com.cos.blogapp.web.dto.JoinReqDto;
 import com.cos.blogapp.web.dto.LoginReqDto;
@@ -63,7 +63,7 @@ public class UserController {
 		System.out.println(dto.getPassword());
 		
 		// 입력한 비밀번호를 암호화한다.
-		String encPassword = SHA256.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
+		String encPassword = SHA.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
 		dto.setPassword(encPassword);
 		
 		// 2. DB -> 조회
@@ -74,6 +74,9 @@ public class UserController {
 		}else { 	// 3. 있으면
 			// 4. session에 저장
 			session.setAttribute("principal", userEntity);
+			// 세션이 날라가는 조건: 1. session.invalidate() - 로그아웃
+			//                       2. 브라우저를 닫으면 날라간다.
+			
 			// 5. 메인페이지를 돌려주기
 			return Script.href("/", "로그인성공");
 		}
@@ -99,7 +102,7 @@ public class UserController {
 		}
 		
 		// 입력한 비밀번호를 암호화한다.
-		String encPassword = SHA256.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
+		String encPassword = SHA.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
 		dto.setPassword(encPassword);
 		
 		userRepository.save(dto.toEntity());	// user 오브젝트에다가 dto에 있는거 채워넣어 

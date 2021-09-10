@@ -19,10 +19,7 @@
 	<br>
 	<!-- 카드 글 끝 -->
 	</c:forEach>
-	
-	${boardsEntity.last }<br>
-	${boardsEntity.first }<br>
-	
+		
 	<!-- 목차 시작 -->
 	<ul class="pagination d-flex justify-content-center">
 		<c:choose>
