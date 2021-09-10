@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.blogapp.domain.user.User;
 import com.cos.blogapp.domain.user.UserRepository;
+import com.cos.blogapp.util.MyAlgorithm;
+import com.cos.blogapp.util.SHA256;
 import com.cos.blogapp.util.Script;
 import com.cos.blogapp.web.dto.JoinReqDto;
 import com.cos.blogapp.web.dto.LoginReqDto;
@@ -60,6 +62,10 @@ public class UserController {
 		System.out.println(dto.getUsername());
 		System.out.println(dto.getPassword());
 		
+		// 입력한 비밀번호를 암호화한다.
+		String encPassword = SHA256.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
+		dto.setPassword(encPassword);
+		
 		// 2. DB -> 조회
 		User userEntity = userRepository.mLogin(dto.getUsername(), dto.getPassword());
 		
@@ -92,6 +98,9 @@ public class UserController {
 			return Script.back("", errorMap.toString());
 		}
 		
+		// 입력한 비밀번호를 암호화한다.
+		String encPassword = SHA256.encrypt(dto.getPassword(), MyAlgorithm.SHA256);
+		dto.setPassword(encPassword);
 		
 		userRepository.save(dto.toEntity());	// user 오브젝트에다가 dto에 있는거 채워넣어 
 		
