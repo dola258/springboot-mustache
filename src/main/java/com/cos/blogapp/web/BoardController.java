@@ -39,7 +39,7 @@ public class BoardController {
 	@PostMapping("/board")
 	public @ResponseBody String save(@Valid BoardSaveReqDto dto, BindingResult bindingResult ) {
 		
-		User principal = (User) session.getAttribute("pricipal");
+		User principal = (User) session.getAttribute("principal");
 		
 		// 인증체크
 		if(principal == null) {
