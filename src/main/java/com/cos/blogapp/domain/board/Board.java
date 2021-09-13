@@ -24,6 +24,7 @@ public class Board {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; //PK (자동증가 번호)
+	@Column(nullable = false, length = 50)
 	private String title; // 아이디
 	@Lob // LongText 타입으로 변경( 오라클에서는 CLOB )
 	private String content;
