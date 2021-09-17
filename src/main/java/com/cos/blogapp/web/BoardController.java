@@ -2,6 +2,7 @@ package com.cos.blogapp.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cos.blogapp.domain.board.Board;
 import com.cos.blogapp.domain.board.BoardRepository;
 import com.cos.blogapp.domain.user.User;
+import com.cos.blogapp.handler.exce.MyNotFoundException;
 import com.cos.blogapp.util.Script;
 import com.cos.blogapp.web.dto.BoardSaveReqDto;
 
@@ -42,7 +44,8 @@ public class BoardController {
 	public String detail(@PathVariable int id, Model model) {
 		// select * from board where id = :id
 	
-	/*	1. findById로 찾은게 없으면 null을 boardEntity에 넣는다 
+	/*	
+	  	1. findById로 찾은게 없으면 null을 boardEntity에 넣는다 
 	  	-사용을 많이 하진 않는다- 
 	  	Board boardEntity = boardRepository.findById(id)
 				.orElse(null);  
@@ -50,7 +53,13 @@ public class BoardController {
 		
 	//	2. orElseTrow
 		Board boardEntity = boardRepository.findById(id)
-				.orElseThrow();
+				.orElseThrow(new Supplier<MyNotFoundException>() {
+					@Override
+					public MyNotFoundException get() {
+						return new MyNotFoundException(id + "번을 찾을 수 없습니다.");
+					}
+				}); // 익셉션마다 다르게 처리하려면(어떻게 처리할지 모르니까) 인터페이스로 함수를 넘겨야한다
+		
 		model.addAttribute("boardEntity", boardEntity);
 		
 		return "board/detail";
